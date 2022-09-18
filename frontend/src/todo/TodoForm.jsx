@@ -1,17 +1,23 @@
 import React from 'react';
-
-// import { Container } from './styles';
+import Grid from '../template/Grid';
+import IconButton from '../template/IconButton';
 
 function TodoForm(props) {
   return (
-    <div >
-        <input 
-        className="form-control form-control-sm" 
-        type="text"
-        placeholder={props.placeholder} 
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        />
+    <div role="form" className='todoForm'>
+        <Grid cols="12 9 10">
+            <input 
+            id='description'
+            className="form-control" 
+            type="text"
+            placeholder={props.placeholder} 
+            value={props.value}
+            onChange={(e) => props.onChange(e.target.value)}
+            />
+        </Grid>
+        <Grid cols="12 3 2">
+          <IconButton styles='primary' icon="plus" />
+        </Grid>
     </div>
   );
 }
