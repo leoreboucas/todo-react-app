@@ -16,19 +16,8 @@ function Todo() {
   }
 
   function handleAdd() {
-    const desc = description
-    axios.post(URL, {desc})
+    axios.post(URL, { description })
     .then(resp => console.log('Funcionou'))
-    // const date = Date.now()
-    // const tarefa = { 
-    //   description: description,
-    //   createdAt: date
-    //  }
-    //  const headers = { 
-    //   header: 'Access-Control-Allow-Origin'
-    // };
-    // api.post('/', tarefa, headers).then(resp => console.log(resp.data))
-    // console.log(list)
   }
 
   return (
