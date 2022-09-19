@@ -10,13 +10,13 @@ function TodoForm(props) {
             id='description'
             className="form-control" 
             type="text"
-            placeholder={props.placeholder} 
-            value={props.value}
-            onChange={(e) => props.onChange(e.target.value)}
+            placeholder="Adicione uma tarefa" 
+            value={props.description}
+            onChange={(e) => props.handleChange(e)}
             />
         </Grid>
         <Grid cols="12 3 2">
-          <IconButton styles='primary' icon="plus" />
+          <IconButton styles='primary' icon="plus" onClick={props.handleAdd}/>
         </Grid>
     </div>
   );

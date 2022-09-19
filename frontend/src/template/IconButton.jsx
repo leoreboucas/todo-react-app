@@ -11,7 +11,7 @@ function IconButton(props) {
                 onClick={props.onClick}>
                 <i className={'fa fa-' + props.icon}></i>
                 </button>
-        )}
+            )}
         </>
     );
 }
