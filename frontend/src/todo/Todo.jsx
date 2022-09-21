@@ -32,7 +32,10 @@ async function handleList (search= ''){
     return setDesc(description)
   }
 
-  
+  function handleClear() {
+    setDesc('')
+    setDescription('')
+  }
 
   function handleMarkAsDone (desc){
     axios.put(`${URL}/${desc._id}`, {
@@ -65,13 +68,15 @@ async function handleList (search= ''){
         <PageHeader name="Tarefas" small="Cadastro" />
         <TodoForm 
           list={list}
-          handleSearch={handleSearch}
-          handleAdd={handleAdd} 
           description={description} 
           handleChange={handleChange} 
+          handleAdd={handleAdd} 
+          handleSearch={handleSearch}
+          handleClear={handleClear}
         />
 
-        <TodoList list={list} 
+        <TodoList 
+          list={list} 
           handleRemove={handleRemove} 
           handleMarkAsDone={handleMarkAsDone}
           handleMarkAsPending={handleMarkAsPending}
