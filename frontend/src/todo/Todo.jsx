@@ -13,15 +13,8 @@ function Todo() {
   const [desc, setDesc] = useState('');
   const [list, setList] = useState([])
 
-async function handleList (){
-    if(desc) {
-      const search = desc ? `&description__regex=${desc}` : ''
-      return await axios.get(`${URL}?sort=-createdAt${search}`).then(resp => setList([resp.data]))
-    } else {
-      setDesc('')
-      return await axios.get(`${URL}?sort=-createdAt`).then(resp => setList([resp.data]))
-    }
-    
+async function handleList (search= ''){
+    await axios.get(`${URL}?sort=-createdAt${search}`).then(resp => setList([resp.data]))
   }
 
   function handleChange(e) {
@@ -31,6 +24,7 @@ async function handleList (){
   function handleAdd() {
     if(description) {axios.post(URL, { description })
     .then(resp => setList([...list, resp.data]))
+    setDesc('')
     setDescription('')}
   }
 
@@ -62,8 +56,9 @@ async function handleList (){
   }
 
   useEffect(() => {
-    handleList()
- },[list])
+    const search = desc ? `&description__regex=${desc}` : ''
+    handleList(search)
+ },[desc, list])
 
   return (
     <div>
