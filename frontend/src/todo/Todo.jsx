@@ -4,27 +4,83 @@ import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
 import axios from 'axios'
+import { useEffect } from 'react';
 
 const URL = 'http://localhost:3003/api/todos'
 
 function Todo() {
   const [description, setDescription] = useState('');
+  const [desc, setDesc] = useState('');
   const [list, setList] = useState([])
+
+async function handleList (){
+    if(desc) {
+      const search = desc ? `&description__regex=${desc}` : ''
+      return await axios.get(`${URL}?sort=-createdAt${search}`).then(resp => setList([resp.data]))
+    } else {
+      setDesc('')
+      return await axios.get(`${URL}?sort=-createdAt`).then(resp => setList([resp.data]))
+    }
+    
+  }
 
   function handleChange(e) {
     setDescription(e.target.value)
   }
 
   function handleAdd() {
-    axios.post(URL, { description })
-    .then(resp => console.log('Funcionou'))
+    if(description) {axios.post(URL, { description })
+    .then(resp => setList([...list, resp.data]))
+    setDescription('')}
   }
+
+  function handleSearch() {
+    return setDesc(description)
+  }
+
+  
+
+  function handleMarkAsDone (desc){
+    axios.put(`${URL}/${desc._id}`, {
+      ...desc,
+      done: true
+    })
+    .then(resp => setList([...list, resp.data]))
+  }
+
+  function handleMarkAsPending (desc){
+    axios.put(`${URL}/${desc._id}`, {
+      ...desc,
+      done: false
+    })
+    .then(resp => setList([...list, resp.data]))
+  }
+
+  function handleRemove (desc) {
+    axios.delete(`${URL}/${desc._id}`)
+    .then(resp => setList([...list, resp.data]))
+  }
+
+  useEffect(() => {
+    handleList()
+ },[list])
 
   return (
     <div>
         <PageHeader name="Tarefas" small="Cadastro" />
-        <TodoForm handleAdd={handleAdd} description={description} handleChange={handleChange} />
-        <TodoList />
+        <TodoForm 
+          list={list}
+          handleSearch={handleSearch}
+          handleAdd={handleAdd} 
+          description={description} 
+          handleChange={handleChange} 
+        />
+
+        <TodoList list={list} 
+          handleRemove={handleRemove} 
+          handleMarkAsDone={handleMarkAsDone}
+          handleMarkAsPending={handleMarkAsPending}
+        />
     </div>
   );
 }

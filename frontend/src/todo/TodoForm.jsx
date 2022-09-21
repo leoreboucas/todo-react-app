@@ -4,7 +4,7 @@ import IconButton from '../template/IconButton';
 
 function TodoForm(props) {
   return (
-    <div role="form" className='todoForm'>
+    <form onSubmit={e => e.preventDefault()} className='todoForm'>
         <Grid cols="12 9 10">
             <input 
             id='description'
@@ -15,10 +15,13 @@ function TodoForm(props) {
             onChange={(e) => props.handleChange(e)}
             />
         </Grid>
+        
         <Grid cols="12 3 2">
           <IconButton styles='primary' icon="plus" onClick={props.handleAdd}/>
+          <IconButton styles='info' icon="search" onClick={props.handleSearch}/>
         </Grid>
-    </div>
+        
+    </form>
   );
 }
 
