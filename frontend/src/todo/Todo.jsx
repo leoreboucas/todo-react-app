@@ -67,7 +67,6 @@ async function handleList (search= ''){
     <div>
         <PageHeader name="Tarefas" small="Cadastro" />
         <TodoForm 
-          list={list}
           description={description} 
           handleChange={handleChange} 
           handleAdd={handleAdd} 

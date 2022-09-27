@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { BrowserRouter, Route, Routes, HashRouter, Navigate} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom'
 
 import About from '../about/About';
 import Todo from '../todo/Todo';
 
 function RoutesTodoApp() {
   return (
-    <BrowserRouter>
+    <Router>
         <Routes>
           <Route path="/todos" element={<Todo />} />
           <Route path="/about" element={<About />} />
@@ -17,7 +17,7 @@ function RoutesTodoApp() {
               />
         </Routes>
         
-    </BrowserRouter>
+    </Router>
   );
 }
 

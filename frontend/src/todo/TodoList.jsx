@@ -1,12 +1,15 @@
 import React from 'react';
 import IconButton from '../template/IconButton';
 
+import { connect } from 'react-redux'
+
 // import { Container } from './styles';
 
 function TodoList(props) {
+  
 
   const renderRows = () => {
-    const list = props.list[0] || []
+    const list = props.list || []
 
     return list.map(todo => (
           <tr key={todo._id}>
@@ -53,4 +56,10 @@ function TodoList(props) {
   );
 }
 
-export default TodoList;
+function mapStateToProps(state) {
+  return {
+    list: state.todo.list
+  }
+}
+
+export default connect(mapStateToProps)(TodoList);
