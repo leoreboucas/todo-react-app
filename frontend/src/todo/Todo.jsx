@@ -66,19 +66,10 @@ async function handleList (search= ''){
   return (
     <div>
         <PageHeader name="Tarefas" small="Cadastro" />
-        <TodoForm 
-          description={description} 
-          handleChange={handleChange} 
-          handleAdd={handleAdd} 
-          handleSearch={handleSearch}
-          handleClear={handleClear}
+        <TodoForm
         />
 
-        <TodoList 
-          list={list} 
-          handleRemove={handleRemove} 
-          handleMarkAsDone={handleMarkAsDone}
-          handleMarkAsPending={handleMarkAsPending}
+        <TodoList
         />
     </div>
   );

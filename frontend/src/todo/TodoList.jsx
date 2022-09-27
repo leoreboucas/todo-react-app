@@ -6,8 +6,6 @@ import { connect } from 'react-redux'
 // import { Container } from './styles';
 
 function TodoList(props) {
-  
-
   const renderRows = () => {
     const list = props.list || []
 
@@ -35,7 +33,6 @@ function TodoList(props) {
                 styles="danger"
                 icon="trash-o"
                 onClick={() => props.handleRemove(todo)} />
-
             </td>
           </tr>
         ))

@@ -1,8 +1,16 @@
 import React from 'react';
 import Grid from '../template/Grid';
 import IconButton from '../template/IconButton';
+import { bindActionCreators} from 'redux'
+import { connect } from 'react-redux'
+import { changeDescription } from '../todo/actions/actions'
 
 function TodoForm(props) {
+  const { 
+      description,
+      changeDescription
+     } = props
+
   const keyHandler = (e) => {
     if(e.key ==='Enter') {
       e.shiftkey ? props.handleSearch() : props.handleAdd()
@@ -20,8 +28,8 @@ function TodoForm(props) {
               onKeyUp={keyHandler}
               type="text"
               placeholder="Adicione uma tarefa" 
-              value={props.description}
-              onChange={(e) => props.handleChange(e)}
+              value={description}
+              onChange={(e) => changeDescription(e)}
             />
         </Grid>
         
@@ -44,4 +52,14 @@ function TodoForm(props) {
   );
 }
 
-export default TodoForm;
+function mapStateToProps(state) {
+  return {
+    description: state.todo.description
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ changeDescription }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);

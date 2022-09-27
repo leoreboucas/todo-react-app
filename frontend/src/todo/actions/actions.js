@@ -1,3 +1,10 @@
+export function changeDescription(event) {
+    return {
+        type: 'DESCRICAO_ALTERADA',
+        payload: event.target.value
+    }
+} 
+
 export function handleAdd(novaTarefa) {
     return {
         type: 'TAREFA_ADICIONADA',
@@ -5,37 +12,37 @@ export function handleAdd(novaTarefa) {
     }
 }
 
-export function handleChange(description) {
+export function handleSearch(description) {
     return {
-        type: 'TAREFA_ADICIONADA',
+        type: 'DESCRICAO_ALTERADA',
         payload: description
     }
 } 
 
 export function handleClear(limpar) {
     return {
-        type: 'TAREFA_ADICIONADA',
+        type: 'BUSCA_LIMPA',
         payload: limpar
     }
 } 
 
 export function handleRemove(removerTarefa) {
     return {
-        type: 'TAREFA_ADICIONADA',
+        type: 'TAREFA_REMOVIDA',
         payload: removerTarefa
     }
 } 
 
 export function handleMarkAsDone(marcarConcluido) {
     return {
-        type: 'TAREFA_ADICIONADA',
+        type: 'TAREFA_FEITA',
         payload: marcarConcluido
     }
 } 
 
 export function handleMarkAsPending(marcarPendente) {
     return {
-        type: 'TAREFA_ADICIONADA',
+        type: 'TAREFA_PENDENTE',
         payload: marcarPendente
     }
 }
