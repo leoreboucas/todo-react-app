@@ -1,26 +1,34 @@
 import React from 'react';
 import Grid from '../template/Grid';
 import IconButton from '../template/IconButton';
-import { bindActionCreators} from 'redux'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { changeDescription } from '../todo/actions/actions'
+import { handleSearch, changeDescription, handleAdd } from '../todo/actions/actions'
+import { useEffect } from 'react';
 
 function TodoForm(props) {
   const { 
       description,
-      changeDescription
+      changeDescription,
+      handleSearch,
+      handleAdd,
+      list
      } = props
 
   const keyHandler = (e) => {
     if(e.key ==='Enter') {
-      e.shiftkey ? props.handleSearch() : props.handleAdd()
+      e.shiftkey ? handleSearch() : handleAdd(description)
     } else if (e.key === 'Escape') {
-      props.handlerClear()
+      handleSearch()
     }
   }
 
+  useEffect(() => {
+    return handleSearch
+  }, [handleSearch, list])
+
   return (
-    <form className='todoForm'>
+    <div role='form' className='todoForm'>
         <Grid cols="12 9 10">
             <input 
               id='description'
@@ -37,29 +45,34 @@ function TodoForm(props) {
           <IconButton 
             styles='primary' 
             icon="plus" 
-            onClick={props.handleAdd}/>
+            onClick={() => handleAdd(description)}/>
           <IconButton 
             styles='info' 
             icon="search" 
-            onClick={props.handleSearch}/>
+            onClick={() => handleSearch(description)}/>
           <IconButton 
             styles='default' 
             icon="close" 
             onClick={props.handleClear}/>
         </Grid>
         
-    </form>
+    </div>
   );
 }
 
 function mapStateToProps(state) {
   return {
-    description: state.todo.description
+    description: state.todo.description,
+    list: state.todo.list
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ changeDescription }, dispatch)
+  return bindActionCreators({ 
+    changeDescription,
+    handleSearch,
+    handleAdd
+   }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);

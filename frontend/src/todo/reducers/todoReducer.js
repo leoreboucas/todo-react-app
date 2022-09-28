@@ -1,19 +1,4 @@
-const INITIAL_STATE = {
-    description: 'Testando',
-    list: [{
-        _id: 1,
-        description: 'Pagar fatura do cartão',
-        done: true
-    }, {
-        _id: 2,
-        description: 'Comprar os livros',
-        done: false
-    }, {
-        _id: 3,
-        description: 'Jogar bola',
-        done: false
-    }]
-}
+const INITIAL_STATE = { description: '', list: [] }
 
 const reducers = (state = INITIAL_STATE, action) => {
     switch(action.type) {
@@ -22,18 +7,23 @@ const reducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 description: action.payload
             }
-        case 'TAREFA_ADICIONADA':
+
+        case 'TODO_ADICIONADO':
             return {
                 ...state,
-                list: action.payload
+                description: ''
             }
-        
+        case 'TODO_REMOVIDO':
+            console.log(action.payload)
+            return {
+                ...state,
+            }
+        case 'BUSCAR_TODO':
+            return {
+                ...state,
+                list: action.payload.data
+            }
         case 'BUSCA_LIMPA':
-            return {
-                ...state,
-                list: action.payload
-            }
-        case 'TAREFA_REMOVIDA':
             return {
                 ...state,
                 list: action.payload
@@ -41,12 +31,12 @@ const reducers = (state = INITIAL_STATE, action) => {
         case 'TAREFA_FEITA':
             return {
                 ...state,
-                list: action.payload
+                list: [...state.list, action.payload.data]
             }
         case 'TAREFA_PENDENTE':
             return {
                 ...state,
-                list: action.payload
+                list: [...state.list, action.payload.data]
             }
         default:
             return state

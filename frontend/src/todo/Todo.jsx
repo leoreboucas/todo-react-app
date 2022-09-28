@@ -1,78 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PageHeader from '../template/PageHeader';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
-import axios from 'axios'
-import { useEffect } from 'react';
+import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {  } from './actions/actions'
 
-const URL = 'http://localhost:3003/api/todos'
 
-function Todo() {
-  const [description, setDescription] = useState('');
-  const [desc, setDesc] = useState('');
-  const [list, setList] = useState([])
+function Todo(props) {
 
-async function handleList (search= ''){
-    await axios.get(`${URL}?sort=-createdAt${search}`).then(resp => setList([resp.data]))
-  }
-
-  function handleChange(e) {
-    setDescription(e.target.value)
-  }
-
-  function handleAdd() {
-    if(description) {axios.post(URL, { description })
-    .then(resp => setList([...list, resp.data]))
-    setDesc('')
-    setDescription('')}
-  }
-
-  function handleSearch() {
-    return setDesc(description)
-  }
-
-  function handleClear() {
-    setDesc('')
-    setDescription('')
-  }
-
-  function handleMarkAsDone (desc){
-    axios.put(`${URL}/${desc._id}`, {
-      ...desc,
-      done: true
-    })
-    .then(resp => setList([...list, resp.data]))
-  }
-
-  function handleMarkAsPending (desc){
-    axios.put(`${URL}/${desc._id}`, {
-      ...desc,
-      done: false
-    })
-    .then(resp => setList([...list, resp.data]))
-  }
-
-  function handleRemove (desc) {
-    axios.delete(`${URL}/${desc._id}`)
-    .then(resp => setList([...list, resp.data]))
-  }
-
-  useEffect(() => {
-    const search = desc ? `&description__regex=${desc}` : ''
-    handleList(search)
- },[desc, list])
+  // function handleClear() {
+  //   setDesc('')
+  //   setDescription('')
+  // }
 
   return (
     <div>
         <PageHeader name="Tarefas" small="Cadastro" />
-        <TodoForm
-        />
+        <TodoForm />
 
-        <TodoList
-        />
+        <TodoList />
     </div>
   );
 }
 
-export default Todo;
+function mapStateToProps(state) {
+  return {
+    description: state.todo.description,
+    list: state.todo.list
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo);
