@@ -9,61 +9,52 @@ export function changeDescription(event) {
     }
 }
 
-export function handleSearch(description = '') {
-    const search = description ? `&description__regex=${description}` : ''
-    const request = axios.get(`${URL}?sort=-createdAt${search}`)
-
-    return {
-        type: 'BUSCAR_TODO',
-        payload: request
+export function handleSearch() {
+    return (dispatch, getState) => {
+        const description = getState().todo.description
+        const search = description ? `&description__regex=${description}` : ''
+        axios.get(`${URL}?sort=-createdAt${search}`)
+        .then(resp => dispatch({ type: 'TODO_CARREGADO',payload: resp.data }))
     }
-} 
+}
 
 export function handleAdd(description) {
-    const request = axios.post(URL, { description })
-
-    return {
-        type: 'TODO_ADICIONADO',
-        payload: request
+    return dispatch => {
+        axios.post(URL, { description })
+        .then(resp => dispatch(handleClear()))
+        .then(resp => dispatch(handleSearch()))
     }
 } 
 
 export function handleRemove(tarefaRemovida) {
-    const request = axios.delete(`${URL}/${tarefaRemovida._id}`)
-
-    return {
-        type: 'TODO_REMOVIDO',
-        payload: request
+    return dispatch => {
+        axios.delete(`${URL}/${tarefaRemovida._id}`)
+        .then(resp => dispatch(handleSearch()))
     }
 } 
 
 export function handleClear(limpar) {
-    return {
-        type: 'BUSCA_LIMPA',
-        payload: limpar
+    return [{ type: 'TODO_CLEAR'}, handleSearch()]
+} 
+
+export function handleMarkAsDone(todo) {
+    return dispatch => {
+        axios.put(`${URL}/${todo._id}`, {
+            ...todo,
+            done: true
+        })
+        .then(resp => dispatch({ type: 'TAREFA_FEITA',payload: resp }))
+        .then(resp => dispatch(handleSearch()))
     }
 } 
 
-export function handleMarkAsDone(descConcluida) {
-    const request = axios.put(`${URL}/${descConcluida._id}`, {
-        ...descConcluida,
-        done: true
-      })
-
-    return {
-        type: 'TAREFA_FEITA',
-        payload: request
-    }
-} 
-
-export function handleMarkAsPending(descPendente) {
-    const request = axios.put(`${URL}/${descPendente._id}`, {
-        ...descPendente,
-        done: false
-      })
-
-    return {
-        type: 'TAREFA_FEITA',
-        payload: request
+export function handleMarkAsPending(todo) {
+    return dispatch => {
+        axios.put(`${URL}/${todo._id}`, {
+            ...todo,
+            done: false
+        })
+        .then(resp => dispatch({ type: 'TAREFA_FEITA',payload: resp }))
+        .then(resp => dispatch(handleSearch()))
     }
 }
